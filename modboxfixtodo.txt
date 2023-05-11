@@ -1,0 +1,4 @@
+-fix key weird exporting thing
+-sample rate die (fixed)
+-pwm
+-octave offset
