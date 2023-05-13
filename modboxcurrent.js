@@ -1977,6 +1977,21 @@ Config.operatorCarrierChorus = [
 								ipan: Config.ipanValues[instrument.ipan],
                             });
                         }
+                        else if (instrument.type == 2) {
+                            instrumentArray.push({
+                                type: Config.instrumentTypeNames[instrument.type],
+                                volume: (5 - instrument.volume) * 20,
+                                wave: Config.pwmwaveNames[instrument.wave],
+                                transition: Config.transitionNames[instrument.transition],
+                                filter: Config.filterNames[instrument.filter],
+                                chorus: Config.chorusNames[instrument.chorus],
+                                effect: Config.effectNames[instrument.effect],
+								harm: Config.harmNames[instrument.harm],
+								imute: Config.imuteNames[instrument.imute],
+								octoff: Config.octoffNames[instrument.octoff],
+								ipan: Config.ipanValues[instrument.ipan],
+                            });
+                        }
                         else {
 							console.log(instrument.type)
                             throw new Error("Unrecognized instrument type");
@@ -2249,6 +2264,40 @@ Config.operatorCarrierChorus = [
 								//	instrument.ipan = Song._clip(0, Config.ipanValues, jsonObject.ipan | 0);
 								//}
                             }
+                            else if (instrument.type == 2) {
+                                if (instrumentObject.volume != undefined) {
+                                    instrument.volume = Song._clip(0, Config.volumeNames.length, Math.round(5 - (instrumentObject.volume | 0) / 20));
+                                }
+                                else {
+                                    instrument.volume = 0;
+                                }
+                                instrument.wave = Config.waveNames.indexOf(instrumentObject.wave);
+                                if (instrument.wave == -1)
+                                    instrument.wave = 1;
+                                var oldFilterNames = { "sustain sharp": 1, "sustain medium": 2, "sustain soft": 3, "decay sharp": 4 };
+                                instrument.filter = oldFilterNames[instrumentObject.filter] != undefined ? oldFilterNames[instrumentObject.filter] : Config.filterNames.indexOf(instrumentObject.filter);
+                                if (instrument.filter == -1)
+                                    instrument.filter = 0;
+                                instrument.chorus = Config.chorusNames.indexOf(instrumentObject.chorus);
+                                if (instrument.chorus == -1)
+                                    instrument.chorus = 0;
+                                instrument.effect = Config.effectNames.indexOf(instrumentObject.effect);
+                                if (instrument.effect == -1)
+                                    instrument.effect = 0;
+								instrument.harm = Config.harmNames.indexOf(instrumentObject.harm);
+                                if (instrument.harm == -1)
+                                    instrument.harm = 0;
+								instrument.octoff = Config.octoffNames.indexOf(instrumentObject.octoff);
+                                if (instrument.octoff == -1)
+                                    instrument.octoff = 0;
+								instrument.imute = Config.imuteNames.indexOf(instrumentObject.imute);
+                                if (instrument.imute == -1)
+                                    instrument.imute = 0;
+								instrument.ipan = Config.ipanValues.indexOf(instrumentObject.ipan);
+								//if (instrumentObject.ipan != undefined) {
+								//	instrument.ipan = Song._clip(0, Config.ipanValues, jsonObject.ipan | 0);
+								//}
+                            }
                             else if (instrument.type == 1) {
                                 instrument.effect = Config.effectNames.indexOf(instrumentObject.effect);
                                 if (instrument.effect == -1)
@@ -2334,6 +2383,7 @@ Config.operatorCarrierChorus = [
 								//}
                             }
                             else {
+								console.log(instrument.type)
                                 throw new Error("Unrecognized instrument type.");
                             }
                         }
